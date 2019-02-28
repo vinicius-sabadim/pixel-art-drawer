@@ -10,7 +10,8 @@ export class Drawer extends Component {
   state = {
     activeColor: '#ff0000',
     colors: ['#ff0000', '#00ff00', '#0000ff'],
-    ctx: null
+    ctx: null,
+    isEraserSelected: false
   }
 
   componentDidMount = () => {
@@ -44,9 +45,15 @@ export class Drawer extends Component {
   }
 
   draw = (initX, initY) => {
-    const { ctx } = this.state
-    ctx.fillStyle = this.state.activeColor
+    const { activeColor, ctx, isEraserSelected } = this.state
+    if (isEraserSelected) {
+      ctx.fillStyle = '#fff'
+    } else {
+      ctx.fillStyle = activeColor
+    }
+
     ctx.fillRect(initX * pixelSize, initY * pixelSize, pixelSize, pixelSize)
+    ctx.stroke()
   }
 
   handleMove = e => {
@@ -60,6 +67,10 @@ export class Drawer extends Component {
 
   handleChangeColor = color => {
     this.setState({ activeColor: color })
+  }
+
+  handleChangeEraser = () => {
+    this.setState({ isEraserSelected: !this.state.isEraserSelected })
   }
 
   render() {
@@ -88,6 +99,14 @@ export class Drawer extends Component {
             className="active__color"
             style={{ backgroundColor: this.state.activeColor }}
           />
+          <label className="eraser">
+            <input
+              type="checkbox"
+              value={this.state.isEraserSelected}
+              onChange={this.handleChangeEraser}
+            />
+            Eraser
+          </label>
         </div>
       </div>
     )

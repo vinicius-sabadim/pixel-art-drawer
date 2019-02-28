@@ -35,3 +35,14 @@
   margin: 5px auto 0;
   width: 50px;
 }
+
+.eraser {
+  cursor: pointer;
+  display: block;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.eraser input {
+  margin-right: 5px;
+}
