@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 
 import './Drawer.css'
 
-const canvasHeight = 400
-const canvasWidth = 600
-const pixelSize = 20
-
 export class Drawer extends Component {
   state = {
     activeColor: '#ff0000',
+    boxSize: 20,
+    canvasHeight: 600,
+    canvasWidth: 600,
     colors: ['#ff0000', '#00ff00', '#0000ff'],
     ctx: null,
     isEraserSelected: false
@@ -22,45 +21,47 @@ export class Drawer extends Component {
   }
 
   startGrid = () => {
-    const { ctx } = this.state
+    const { boxSize, canvasHeight, canvasWidth, ctx } = this.state
     for (let count = 0; count <= canvasWidth; count++) {
-      ctx.moveTo(count * pixelSize, 0)
-      ctx.lineTo(count * pixelSize, canvasHeight)
+      ctx.moveTo(count * boxSize, 0)
+      ctx.lineTo(count * boxSize, canvasHeight)
       ctx.strokeStyle = '#ccc'
       ctx.stroke()
     }
     for (let count = 0; count <= canvasHeight; count++) {
-      ctx.moveTo(0, count * pixelSize)
-      ctx.lineTo(canvasWidth, count * pixelSize)
+      ctx.moveTo(0, count * boxSize)
+      ctx.lineTo(canvasWidth, count * boxSize)
       ctx.strokeStyle = '#ccc'
       ctx.stroke()
     }
   }
 
   handleClick = e => {
+    const { boxSize } = this.state
     const { offsetX, offsetY } = e.nativeEvent
-    const initX = parseInt(offsetX / pixelSize, 10)
-    const initY = parseInt(offsetY / pixelSize, 10)
+    const initX = parseInt(offsetX / boxSize, 10)
+    const initY = parseInt(offsetY / boxSize, 10)
     this.draw(initX, initY)
   }
 
   draw = (initX, initY) => {
-    const { activeColor, ctx, isEraserSelected } = this.state
+    const { activeColor, boxSize, ctx, isEraserSelected } = this.state
     if (isEraserSelected) {
       ctx.fillStyle = '#fff'
     } else {
       ctx.fillStyle = activeColor
     }
 
-    ctx.fillRect(initX * pixelSize, initY * pixelSize, pixelSize, pixelSize)
+    ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
     ctx.stroke()
   }
 
   handleMove = e => {
     if (e.buttons === 1) {
+      const { boxSize } = this.state
       const { offsetX, offsetY } = e.nativeEvent
-      const initX = parseInt(offsetX / pixelSize, 10)
-      const initY = parseInt(offsetY / pixelSize, 10)
+      const initX = parseInt(offsetX / boxSize, 10)
+      const initY = parseInt(offsetY / boxSize, 10)
       this.draw(initX, initY)
     }
   }
@@ -74,6 +75,12 @@ export class Drawer extends Component {
   }
 
   render() {
+    const {
+      activeColor,
+      canvasHeight,
+      canvasWidth,
+      isEraserSelected
+    } = this.state
     return (
       <div className="container">
         <canvas
@@ -87,22 +94,19 @@ export class Drawer extends Component {
           <ul className="color__select-menu">
             {this.state.colors.map(color => (
               <li
-                className="color"
+                className={`${
+                  activeColor === color ? 'active__color color' : 'color'
+                }`}
                 key={color}
                 style={{ backgroundColor: color }}
                 onClick={this.handleChangeColor.bind(this, color)}
               />
             ))}
           </ul>
-          <span>Active color</span>
-          <div
-            className="active__color"
-            style={{ backgroundColor: this.state.activeColor }}
-          />
           <label className="eraser">
             <input
               type="checkbox"
-              value={this.state.isEraserSelected}
+              value={isEraserSelected}
               onChange={this.handleChangeEraser}
             />
             Eraser
