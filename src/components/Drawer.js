@@ -34,8 +34,19 @@ export class Drawer extends Component {
     }
   }
 
-  fillCell = e => {
-    console.log(e)
+  handleClick = e => {
+    const { offsetX, offsetY } = e.nativeEvent
+    const initX = parseInt(offsetX / pixelSize, 10)
+    const initY = parseInt(offsetY / pixelSize, 10)
+
+    const { ctx } = this.state
+    ctx.fillStyle = '#ff0000'
+    ctx.fillRect(initX * pixelSize, initY * pixelSize, pixelSize, pixelSize)
+  }
+
+  handleMove = e => {
+    // console.log(e.nativeEvent.offsetX)
+    // console.log(e.buttons)
   }
 
   render() {
@@ -45,7 +56,8 @@ export class Drawer extends Component {
           id="canvas"
           height={canvasHeight}
           width={canvasWidth}
-          onMouseMove={this.fillCell}
+          onClick={this.handleClick}
+          onMouseMove={this.handleMove}
         />
       </div>
     )
