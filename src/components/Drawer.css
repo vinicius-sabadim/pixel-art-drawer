@@ -1,3 +1,36 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
 #canvas {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
+}
+
+.color__select {
+  background-color: #eee;
+  margin-left: 20px;
+  padding: 10px;
+  width: 170px;
+}
+
+.color__select-menu {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.color {
+  border: 1px solid #555;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+
+.active__color {
+  border: 1px solid #555;
+  height: 50px;
+  margin: 5px auto 0;
+  width: 50px;
 }

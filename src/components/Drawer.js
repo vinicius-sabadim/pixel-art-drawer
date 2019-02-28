@@ -8,6 +8,8 @@ const pixelSize = 20
 
 export class Drawer extends Component {
   state = {
+    activeColor: '#ff0000',
+    colors: ['#ff0000', '#00ff00', '#0000ff'],
     ctx: null
   }
 
@@ -40,7 +42,7 @@ export class Drawer extends Component {
     const initY = parseInt(offsetY / pixelSize, 10)
 
     const { ctx } = this.state
-    ctx.fillStyle = '#ff0000'
+    ctx.fillStyle = this.state.activeColor
     ctx.fillRect(initX * pixelSize, initY * pixelSize, pixelSize, pixelSize)
   }
 
@@ -49,9 +51,13 @@ export class Drawer extends Component {
     // console.log(e.buttons)
   }
 
+  handleChangeColor = color => {
+    this.setState({ activeColor: color })
+  }
+
   render() {
     return (
-      <div>
+      <div className="container">
         <canvas
           id="canvas"
           height={canvasHeight}
@@ -59,6 +65,23 @@ export class Drawer extends Component {
           onClick={this.handleClick}
           onMouseMove={this.handleMove}
         />
+        <div className="color__select">
+          <ul className="color__select-menu">
+            {this.state.colors.map(color => (
+              <li
+                className="color"
+                key={color}
+                style={{ backgroundColor: color }}
+                onClick={this.handleChangeColor.bind(this, color)}
+              />
+            ))}
+          </ul>
+          <span>Active color</span>
+          <div
+            className="active__color"
+            style={{ backgroundColor: this.state.activeColor }}
+          />
+        </div>
       </div>
     )
   }
