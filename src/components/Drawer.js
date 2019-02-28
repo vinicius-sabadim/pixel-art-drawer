@@ -40,15 +40,22 @@ export class Drawer extends Component {
     const { offsetX, offsetY } = e.nativeEvent
     const initX = parseInt(offsetX / pixelSize, 10)
     const initY = parseInt(offsetY / pixelSize, 10)
+    this.draw(initX, initY)
+  }
 
+  draw = (initX, initY) => {
     const { ctx } = this.state
     ctx.fillStyle = this.state.activeColor
     ctx.fillRect(initX * pixelSize, initY * pixelSize, pixelSize, pixelSize)
   }
 
   handleMove = e => {
-    // console.log(e.nativeEvent.offsetX)
-    // console.log(e.buttons)
+    if (e.buttons === 1) {
+      const { offsetX, offsetY } = e.nativeEvent
+      const initX = parseInt(offsetX / pixelSize, 10)
+      const initY = parseInt(offsetY / pixelSize, 10)
+      this.draw(initX, initY)
+    }
   }
 
   handleChangeColor = color => {
