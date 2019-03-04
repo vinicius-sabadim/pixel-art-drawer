@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
+import { ChromePicker, CirclePicker } from 'react-color'
 
 import './Drawer.css'
 
 export class Drawer extends Component {
   state = {
-    activeColor: '#ff0000',
+    activeColor: '#f44336',
     boxSize: 20,
     canvasHeight: 600,
     canvasWidth: 600,
-    colors: ['#ff0000', '#00ff00', '#0000ff'],
     ctx: null,
     isEraserSelected: false
   }
@@ -67,7 +67,7 @@ export class Drawer extends Component {
   }
 
   handleChangeColor = color => {
-    this.setState({ activeColor: color })
+    this.setState({ activeColor: color.hex })
   }
 
   handleChangeEraser = () => {
@@ -91,18 +91,18 @@ export class Drawer extends Component {
           onMouseMove={this.handleMove}
         />
         <div className="color__select">
-          <ul className="color__select-menu">
-            {this.state.colors.map(color => (
-              <li
-                className={`${
-                  activeColor === color ? 'active__color color' : 'color'
-                }`}
-                key={color}
-                style={{ backgroundColor: color }}
-                onClick={this.handleChangeColor.bind(this, color)}
-              />
-            ))}
-          </ul>
+          <ChromePicker
+            color={activeColor}
+            disableAlpha={true}
+            onChange={this.handleChangeColor}
+          />
+          <div style={{ margin: '30px 0' }}>
+            <CirclePicker
+              color={activeColor}
+              width="210px"
+              onChange={this.handleChangeColor}
+            />
+          </div>
           <label className="eraser">
             <input
               type="checkbox"

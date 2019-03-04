@@ -9,34 +9,20 @@
 }
 
 .color__select {
+  align-items: center;
   background-color: #eee;
-  margin-left: 20px;
-  padding: 10px;
-  width: 170px;
-}
-
-.color__select-menu {
   display: flex;
-  justify-content: space-between;
-  list-style: none;
-  margin-bottom: 20px;
-}
-
-.color {
-  border: 1px solid #555;
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-}
-
-.active__color {
-  box-shadow: 0 0 5px #555;
-  transform: scale(1.1);
+  flex-direction: column;
+  margin-left: 20px;
+  padding: 20px;
+  width: 260px;
 }
 
 .eraser {
+  align-items: center;
+  align-self: flex-start;
   cursor: pointer;
-  display: block;
+  display: flex;
   font-size: 18px;
   margin-top: 20px;
 }
