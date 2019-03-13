@@ -3,6 +3,9 @@ import { ChromePicker, CirclePicker } from 'react-color'
 
 import './Drawer.css'
 
+import Eraser from '../assets/eraser.png'
+import Pencil from '../assets/pencil.png'
+
 export class Drawer extends Component {
   state = {
     activeColor: '#f44336',
@@ -10,7 +13,7 @@ export class Drawer extends Component {
     canvasHeight: 600,
     canvasWidth: 600,
     ctx: null,
-    isEraserSelected: false
+    mode: 'pencil'
   }
 
   componentDidMount = () => {
@@ -45,8 +48,8 @@ export class Drawer extends Component {
   }
 
   draw = (initX, initY) => {
-    const { activeColor, boxSize, ctx, isEraserSelected } = this.state
-    if (isEraserSelected) {
+    const { activeColor, boxSize, ctx, mode } = this.state
+    if (mode === 'eraser') {
       ctx.fillStyle = '#fff'
     } else {
       ctx.fillStyle = activeColor
@@ -70,17 +73,12 @@ export class Drawer extends Component {
     this.setState({ activeColor: color.hex })
   }
 
-  handleChangeEraser = () => {
-    this.setState({ isEraserSelected: !this.state.isEraserSelected })
+  changeMode = mode => {
+    this.setState({ mode })
   }
 
   render() {
-    const {
-      activeColor,
-      canvasHeight,
-      canvasWidth,
-      isEraserSelected
-    } = this.state
+    const { activeColor, canvasHeight, canvasWidth, mode } = this.state
     return (
       <div className="container">
         <canvas
@@ -90,7 +88,7 @@ export class Drawer extends Component {
           onClick={this.handleClick}
           onMouseMove={this.handleMove}
         />
-        <div className="color__select">
+        <div className="panel">
           <ChromePicker
             color={activeColor}
             disableAlpha={true}
@@ -103,14 +101,26 @@ export class Drawer extends Component {
               onChange={this.handleChangeColor}
             />
           </div>
-          <label className="eraser">
-            <input
-              type="checkbox"
-              value={isEraserSelected}
-              onChange={this.handleChangeEraser}
-            />
-            Eraser
-          </label>
+          <div className="tools">
+            <div
+              className={`icon ${mode === 'pencil' ? 'icon--active' : ''}`}
+              onClick={this.changeMode.bind(this, 'pencil')}
+            >
+              <img
+                src={Pencil}
+                alt="Pencil by Denis Sazhin from the Noun Project"
+              />
+            </div>
+            <div
+              className={`icon ${mode === 'eraser' ? 'icon--active' : ''}`}
+              onClick={this.changeMode.bind(this, 'eraser')}
+            >
+              <img
+                src={Eraser}
+                alt="eraser by Maria Zamchy from the Noun Project"
+              />
+            </div>
+          </div>
         </div>
       </div>
     )
