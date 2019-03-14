@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: center;
+  padding-bottom: 50px;
   user-select: none;
 }
 
@@ -16,6 +17,31 @@
   margin-left: 20px;
   padding: 20px;
   width: 260px;
+}
+
+.info {
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding: 10px 0 20px;
+}
+
+.input {
+  text-align: left;
+  width: 30%;
+}
+
+.input label {
+  display: block;
+  padding-bottom: 3px;
+  padding-left: 5px;
+}
+
+.input input {
+  font-size: 18px;
+  padding: 5px;
+  width: 100%;
 }
 
 .tools {
