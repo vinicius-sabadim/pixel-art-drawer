@@ -1,89 +1,89 @@
-import React, { Component } from 'react'
-import { ChromePicker, CirclePicker } from 'react-color'
+import React, { Component } from "react";
+import { ChromePicker, CirclePicker } from "react-color";
 
-import { rgbToHex } from '../utils'
+import { rgbToHex } from "../utils";
 
-import './Drawer.css'
+import "./Drawer.css";
 
-import Brush from '../assets/brush.png'
-import Eraser from '../assets/eraser.png'
-import Pencil from '../assets/pencil.png'
+import Brush from "../assets/brush.png";
+import Eraser from "../assets/eraser.png";
+import Pencil from "../assets/pencil.png";
 
 export class Drawer extends Component {
   state = {
-    activeColor: '#fff',
+    activeColor: "#fff",
     boxSize: 20,
     canvasHeight: 600,
     canvasWidth: 600,
     ctx: null,
-    mode: 'draw'
-  }
+    mode: "draw"
+  };
 
   componentDidMount = () => {
-    const canvas = document.getElementById('canvas')
-    const ctx = canvas.getContext('2d')
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-    this.setState({ ctx }, this.startGrid)
-  }
+    this.setState({ ctx }, this.startGrid);
+  };
 
   startGrid = () => {
-    const { boxSize, canvasHeight, canvasWidth } = this.state
-    const totalBoxHorizontal = parseInt(canvasWidth / boxSize, 10)
-    const totalBoxVertical = parseInt(canvasHeight / boxSize, 10)
+    const { boxSize, canvasHeight, canvasWidth } = this.state;
+    const totalBoxHorizontal = parseInt(canvasWidth / boxSize, 10);
+    const totalBoxVertical = parseInt(canvasHeight / boxSize, 10);
 
     for (let initX = 0; initX < totalBoxHorizontal; initX++) {
       for (let initY = 0; initY < totalBoxVertical; initY++) {
-        this.draw(initX, initY)
+        this.draw(initX, initY);
       }
     }
 
-    this.setState({ activeColor: '#f44336' })
-  }
+    this.setState({ activeColor: "#f44336" });
+  };
 
   handleClick = e => {
-    const { boxSize } = this.state
-    const { offsetX, offsetY } = e.nativeEvent
-    const initX = parseInt(offsetX / boxSize, 10)
-    const initY = parseInt(offsetY / boxSize, 10)
-    this.draw(initX, initY)
-  }
+    const { boxSize } = this.state;
+    const { offsetX, offsetY } = e.nativeEvent;
+    const initX = parseInt(offsetX / boxSize, 10);
+    const initY = parseInt(offsetY / boxSize, 10);
+    this.draw(initX, initY);
+  };
 
   draw = (initX, initY) => {
-    const { activeColor, boxSize, ctx, mode } = this.state
-    if (mode === 'paint') return
-    if (mode === 'eraser') {
-      ctx.fillStyle = '#fff'
+    const { activeColor, boxSize, ctx, mode } = this.state;
+    if (mode === "paint") return;
+    if (mode === "eraser") {
+      ctx.fillStyle = "#fff";
     } else {
-      ctx.fillStyle = activeColor
+      ctx.fillStyle = activeColor;
     }
-    ctx.strokeStyle = '#ccc'
-    ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
-    ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
-  }
+    ctx.strokeStyle = "#ccc";
+    ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize);
+    ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize);
+  };
 
   handleMove = e => {
-    const { boxSize, ctx } = this.state
-    const { offsetX, offsetY } = e.nativeEvent
+    const { boxSize, ctx } = this.state;
+    const { offsetX, offsetY } = e.nativeEvent;
     if (e.buttons === 1) {
-      const initX = parseInt(offsetX / boxSize, 10)
-      const initY = parseInt(offsetY / boxSize, 10)
-      this.draw(initX, initY)
+      const initX = parseInt(offsetX / boxSize, 10);
+      const initY = parseInt(offsetY / boxSize, 10);
+      this.draw(initX, initY);
     } else {
-      const [r, g, b] = ctx.getImageData(offsetX, offsetY, 1, 1).data
-      console.log(rgbToHex(r, g, b))
+      const [r, g, b] = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+      console.log(rgbToHex(r, g, b));
     }
-  }
+  };
 
   handleChangeColor = color => {
-    this.setState({ activeColor: color.hex })
-  }
+    this.setState({ activeColor: color.hex });
+  };
 
   changeMode = mode => {
-    this.setState({ mode })
-  }
+    this.setState({ mode });
+  };
 
   render() {
-    const { activeColor, canvasHeight, canvasWidth, mode } = this.state
+    const { activeColor, canvasHeight, canvasWidth, mode } = this.state;
     return (
       <div className="container">
         <canvas
@@ -99,18 +99,40 @@ export class Drawer extends Component {
             disableAlpha={true}
             onChange={this.handleChangeColor}
           />
-          <div style={{ margin: '30px 0' }}>
+          <div style={{ margin: "30px 0" }}>
             <CirclePicker
               color={activeColor}
+              colors={[
+                "#f44336",
+                "#e91e63",
+                "#FF00EB",
+                "#9c27b0",
+                "#673ab7",
+                "#3f51b5",
+                "#2196f3",
+                "#03a9f4",
+                "#00bcd4",
+                "#009688",
+                "#4caf50",
+                "#8bc34a",
+                "#cddc39",
+                "#ffeb3b",
+                "#ffc107",
+                "#ff9800",
+                "#ff5722",
+                "#795548",
+                "#607d8b",
+                "#000000"
+              ]}
               width="210px"
               onChange={this.handleChangeColor}
             />
           </div>
           <div className="tools">
             <div
-              className={`icon ${mode === 'draw' ? 'icon--active' : ''}`}
+              className={`icon ${mode === "draw" ? "icon--active" : ""}`}
               title="Draw"
-              onClick={this.changeMode.bind(this, 'draw')}
+              onClick={this.changeMode.bind(this, "draw")}
             >
               <img
                 src={Pencil}
@@ -118,9 +140,9 @@ export class Drawer extends Component {
               />
             </div>
             <div
-              className={`icon ${mode === 'paint' ? 'icon--active' : ''}`}
+              className={`icon ${mode === "paint" ? "icon--active" : ""}`}
               title="Paint"
-              onClick={this.changeMode.bind(this, 'paint')}
+              onClick={this.changeMode.bind(this, "paint")}
             >
               <img
                 src={Brush}
@@ -128,9 +150,9 @@ export class Drawer extends Component {
               />
             </div>
             <div
-              className={`icon ${mode === 'eraser' ? 'icon--active' : ''}`}
+              className={`icon ${mode === "eraser" ? "icon--active" : ""}`}
               title="Eraser"
-              onClick={this.changeMode.bind(this, 'eraser')}
+              onClick={this.changeMode.bind(this, "eraser")}
             >
               <img
                 src={Eraser}
@@ -140,8 +162,8 @@ export class Drawer extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Drawer
+export default Drawer;
