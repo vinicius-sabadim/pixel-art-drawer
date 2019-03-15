@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ChromePicker, CirclePicker } from 'react-color'
 
+import Info from './Info'
 import Tools from './Tools'
 
 import { colors, isMouseClicked, rgbToHex } from '../utils'
@@ -90,7 +91,7 @@ export class Drawer extends Component {
   }
 
   render() {
-    const { activeColor, boxSize, canvasHeight, canvasWidth, mode } = this.state
+    const { activeColor, canvasHeight, canvasWidth } = this.state
 
     return (
       <div className="container">
@@ -103,40 +104,12 @@ export class Drawer extends Component {
           onMouseMove={this.handleMove}
         />
         <div className="panel">
-          <div className="info">
-            <div className="input">
-              <label>Pixel</label>
-              <input
-                name="boxSize"
-                step="10"
-                type="number"
-                value={boxSize}
-                onChange={this.handleChangeInput}
-              />
-            </div>
-            <div className="input">
-              <label>Width</label>
-              <input
-                min={boxSize}
-                name="canvasWidth"
-                step={boxSize}
-                type="number"
-                value={canvasWidth}
-                onChange={this.handleChangeInput}
-              />
-            </div>
-            <div className="input">
-              <label>Height</label>
-              <input
-                min={boxSize}
-                name="canvasHeight"
-                step={boxSize}
-                type="number"
-                value={canvasHeight}
-                onChange={this.handleChangeInput}
-              />
-            </div>
-          </div>
+          <Info
+            boxSize={this.state.boxSize}
+            canvasHeight={canvasHeight}
+            canvasWidth={canvasWidth}
+            onChangeInput={this.handleChangeInput}
+          />
           <ChromePicker
             color={activeColor}
             disableAlpha={true}
@@ -150,7 +123,7 @@ export class Drawer extends Component {
               onChange={this.handleChangeColor}
             />
           </div>
-          <Tools mode={mode} onChangeMode={this.handleChangeMode} />
+          <Tools mode={this.state.mode} onChangeMode={this.handleChangeMode} />
         </div>
       </div>
     )
