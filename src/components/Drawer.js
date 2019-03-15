@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { ChromePicker, CirclePicker } from 'react-color'
 
-import { rgbToHex } from '../utils'
+import Tools from './Tools'
+
+import { colors, isMouseClicked, rgbToHex } from '../utils'
 
 import './Drawer.css'
-
-import Brush from '../assets/brush.png'
-import Eraser from '../assets/eraser.png'
-import Pencil from '../assets/pencil.png'
 
 export class Drawer extends Component {
   state = {
@@ -49,20 +47,28 @@ export class Drawer extends Component {
     if (this.state.mode === 'paint') return
 
     const { boxSize, ctx } = this.state
-    ctx.fillStyle = color
+    ctx.fillStyle = color ? color : this.getColor()
     ctx.strokeStyle = '#ccc'
     ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
     ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
   }
 
+  getColor = () => {
+    const { activeColor, mode } = this.state
+    if (mode === 'eraser') return '#fff'
+    return activeColor
+  }
+
   handleMove = e => {
-    const { boxSize, ctx } = this.state
+    const { boxSize } = this.state
     const { offsetX, offsetY } = e.nativeEvent
-    if (e.buttons === 1) {
+
+    if (isMouseClicked(e)) {
       const initX = parseInt(offsetX / boxSize, 10)
       const initY = parseInt(offsetY / boxSize, 10)
       this.draw(initX, initY)
     } else {
+      const { ctx } = this.state
       const [r, g, b] = ctx.getImageData(offsetX, offsetY, 1, 1).data
       console.log(rgbToHex(r, g, b))
     }
@@ -72,7 +78,7 @@ export class Drawer extends Component {
     this.setState({ activeColor: color.hex })
   }
 
-  changeMode = mode => {
+  handleChangeMode = mode => {
     this.setState({ mode })
   }
 
@@ -139,64 +145,12 @@ export class Drawer extends Component {
           <div style={{ margin: '30px 0' }}>
             <CirclePicker
               color={activeColor}
-              colors={[
-                '#f44336',
-                '#e91e63',
-                '#FF00EB',
-                '#9c27b0',
-                '#673ab7',
-                '#3f51b5',
-                '#2196f3',
-                '#03a9f4',
-                '#00bcd4',
-                '#009688',
-                '#4caf50',
-                '#8bc34a',
-                '#cddc39',
-                '#ffeb3b',
-                '#ffc107',
-                '#ff9800',
-                '#ff5722',
-                '#795548',
-                '#607d8b',
-                '#000000'
-              ]}
+              colors={colors}
               width="210px"
               onChange={this.handleChangeColor}
             />
           </div>
-          <div className="tools">
-            <div
-              className={`icon ${mode === 'draw' ? 'icon--active' : ''}`}
-              title="Draw"
-              onClick={this.changeMode.bind(this, 'draw')}
-            >
-              <img
-                src={Pencil}
-                alt="Pencil by Denis Sazhin from the Noun Project"
-              />
-            </div>
-            <div
-              className={`icon ${mode === 'paint' ? 'icon--active' : ''}`}
-              title="Paint"
-              onClick={this.changeMode.bind(this, 'paint')}
-            >
-              <img
-                src={Brush}
-                alt="Brush by Denis Sazhin from the Noun Project"
-              />
-            </div>
-            <div
-              className={`icon ${mode === 'eraser' ? 'icon--active' : ''}`}
-              title="Eraser"
-              onClick={this.changeMode.bind(this, 'eraser')}
-            >
-              <img
-                src={Eraser}
-                alt="eraser by Maria Zamchy from the Noun Project"
-              />
-            </div>
-          </div>
+          <Tools mode={mode} onChangeMode={this.handleChangeMode} />
         </div>
       </div>
     )

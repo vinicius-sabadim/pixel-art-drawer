@@ -43,37 +43,3 @@
   padding: 5px;
   width: 100%;
 }
-
-.tools {
-  border-top: 1px solid #ccc;
-  display: flex;
-  justify-self: flex-start;
-  padding: 20px 10px;
-  width: 100%;
-}
-
-.icon {
-  align-items: center;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  margin-right: 5px;
-  padding: 5px;
-  width: 40px;
-}
-
-.icon:hover {
-  transform: scale(1.1);
-}
-
-.icon--active {
-  border: 3px solid #999;
-}
-
-.icon img {
-  width: 100%;
-}
