@@ -11,9 +11,9 @@ import './Drawer.css'
 export class Drawer extends Component {
   state = {
     activeColor: '#f44336',
-    boxSize: 20,
-    canvasHeight: 600,
-    canvasWidth: 600,
+    boxSize: 25,
+    canvasHeight: 700,
+    canvasWidth: 700,
     ctx: null,
     mode: 'draw'
   }

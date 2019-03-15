@@ -13,8 +13,9 @@ export default function Info({
       <div className="input">
         <label>Pixel</label>
         <input
+          min="10"
           name="boxSize"
-          step="10"
+          step="5"
           type="number"
           value={boxSize}
           onChange={onChangeInput}
