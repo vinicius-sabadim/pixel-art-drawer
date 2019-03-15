@@ -20,44 +20,36 @@ export class Drawer extends Component {
   }
 
   componentDidMount = () => {
-    const canvas = document.getElementById('canvas')
-    const ctx = canvas.getContext('2d')
-
+    const ctx = document.getElementById('canvas').getContext('2d')
     this.setState({ ctx }, this.startGrid)
   }
 
   startGrid = () => {
-    this.setState({ activeColor: '#fff' }, () => {
-      const { boxSize, canvasHeight, canvasWidth } = this.state
-      const totalBoxHorizontal = parseInt(canvasWidth / boxSize, 10)
-      const totalBoxVertical = parseInt(canvasHeight / boxSize, 10)
+    const { boxSize, canvasHeight, canvasWidth } = this.state
+    const totalBoxHorizontal = parseInt(canvasWidth / boxSize, 10)
+    const totalBoxVertical = parseInt(canvasHeight / boxSize, 10)
 
-      for (let initX = 0; initX < totalBoxHorizontal; initX++) {
-        for (let initY = 0; initY < totalBoxVertical; initY++) {
-          this.draw(initX, initY)
-        }
+    for (let initX = 0; initX < totalBoxHorizontal; initX++) {
+      for (let initY = 0; initY < totalBoxVertical; initY++) {
+        this.draw(initX, initY, '#fff')
       }
-
-      this.setState({ activeColor: '#f44336' })
-    })
+    }
   }
 
   handleClick = e => {
-    const { boxSize } = this.state
+    const { activeColor, boxSize } = this.state
     const { offsetX, offsetY } = e.nativeEvent
     const initX = parseInt(offsetX / boxSize, 10)
     const initY = parseInt(offsetY / boxSize, 10)
-    this.draw(initX, initY)
+
+    this.draw(initX, initY, activeColor)
   }
 
-  draw = (initX, initY) => {
-    const { activeColor, boxSize, ctx, mode } = this.state
-    if (mode === 'paint') return
-    if (mode === 'eraser') {
-      ctx.fillStyle = '#fff'
-    } else {
-      ctx.fillStyle = activeColor
-    }
+  draw = (initX, initY, color) => {
+    if (this.state.mode === 'paint') return
+
+    const { boxSize, ctx } = this.state
+    ctx.fillStyle = color
     ctx.strokeStyle = '#ccc'
     ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
     ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
@@ -88,17 +80,19 @@ export class Drawer extends Component {
     const { name, value } = event.target
     if (!value) return
 
-    this.setState({ [name]: value }, this.startGrid)
+    this.setState({ [name]: parseInt(value, 10) }, this.startGrid)
   }
 
   render() {
     const { activeColor, boxSize, canvasHeight, canvasWidth, mode } = this.state
+
     return (
       <div className="container">
         <canvas
           id="canvas"
           height={canvasHeight}
           width={canvasWidth}
+          style={{ height: canvasHeight, width: canvasWidth }}
           onClick={this.handleClick}
           onMouseMove={this.handleMove}
         />
