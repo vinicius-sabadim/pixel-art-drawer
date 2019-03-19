@@ -36,31 +36,21 @@ export class Drawer extends Component {
   }
 
   handleClick = e => {
-    const { activeColor, boxSize } = this.state
+    const { activeColor, boxSize, mode } = this.state
     const { offsetX, offsetY } = e.nativeEvent
     const initX = parseInt(offsetX / boxSize, 10)
     const initY = parseInt(offsetY / boxSize, 10)
 
-    this.draw(initX, initY, activeColor)
-  }
-
-  draw = (initX, initY, color) => {
-    if (this.state.mode === 'paint') return
-
-    const { boxSize, ctx } = this.state
-    ctx.fillStyle = color ? color : this.getColor()
-    ctx.strokeStyle = '#ccc'
-    ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
-    ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
-  }
-
-  getColor = () => {
-    const { activeColor, mode } = this.state
-    if (mode === 'eraser') return '#fff'
-    return activeColor
+    if (mode === 'paint') {
+      this.paint(initX, initY, this.getColorOfBox(initX, initY))
+    } else {
+      this.draw(initX, initY, activeColor)
+    }
   }
 
   handleMove = e => {
+    if (this.state.mode === 'paint') return
+
     const { boxSize } = this.state
     const { offsetX, offsetY } = e.nativeEvent
 
@@ -68,11 +58,40 @@ export class Drawer extends Component {
       const initX = parseInt(offsetX / boxSize, 10)
       const initY = parseInt(offsetY / boxSize, 10)
       this.draw(initX, initY)
-    } else {
-      const { ctx } = this.state
-      const [r, g, b] = ctx.getImageData(offsetX, offsetY, 1, 1).data
-      console.log(rgbToHex(r, g, b))
     }
+  }
+
+  paint = (initX, initY, colorToPaintOver) => {
+    const colorOfBox = this.getColorOfBox(initX, initY)
+    const colorToPaint = this.getColor()
+
+    if (colorOfBox === colorToPaintOver) {
+      this.draw(initX, initY, colorToPaint)
+    }
+
+    if (this.getColorOfBox(initX - 1, initY) === colorToPaintOver) {
+      this.paint(initX - 1, initY, colorToPaintOver)
+    }
+    if (this.getColorOfBox(initX + 1, initY) === colorToPaintOver) {
+      this.paint(initX + 1, initY, colorToPaintOver)
+    }
+    if (this.getColorOfBox(initX, initY - 1) === colorToPaintOver) {
+      this.paint(initX, initY - 1, colorToPaintOver)
+    }
+    if (this.getColorOfBox(initX, initY + 1) === colorToPaintOver) {
+      this.paint(initX, initY + 1, colorToPaintOver)
+    }
+  }
+
+  getColorOfBox = (initX, initY) => {
+    const { boxSize, ctx } = this.state
+    const [r, g, b] = ctx.getImageData(
+      initX * boxSize + 1,
+      initY * boxSize + 1,
+      1,
+      1
+    ).data
+    return rgbToHex(r, g, b)
   }
 
   handleChangeColor = color => {
@@ -88,6 +107,20 @@ export class Drawer extends Component {
     if (!value) return
 
     this.setState({ [name]: parseInt(value, 10) }, this.startGrid)
+  }
+
+  draw = (initX, initY, color) => {
+    const { boxSize, ctx } = this.state
+    ctx.fillStyle = color ? color : this.getColor()
+    ctx.strokeStyle = '#ccc'
+    ctx.fillRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
+    ctx.strokeRect(initX * boxSize, initY * boxSize, boxSize, boxSize)
+  }
+
+  getColor = () => {
+    const { activeColor, mode } = this.state
+    if (mode === 'eraser') return '#fff'
+    return activeColor
   }
 
   render() {
