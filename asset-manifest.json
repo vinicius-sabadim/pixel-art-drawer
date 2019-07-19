@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/pixel-art-drawer/static/css/main.37edf6c9.chunk.css",
+    "main.js": "/pixel-art-drawer/static/js/main.04cde4e6.chunk.js",
+    "main.js.map": "/pixel-art-drawer/static/js/main.04cde4e6.chunk.js.map",
+    "runtime~main.js": "/pixel-art-drawer/static/js/runtime~main.5b7ff2f2.js",
+    "runtime~main.js.map": "/pixel-art-drawer/static/js/runtime~main.5b7ff2f2.js.map",
+    "static/js/2.27da7bf1.chunk.js": "/pixel-art-drawer/static/js/2.27da7bf1.chunk.js",
+    "static/js/2.27da7bf1.chunk.js.map": "/pixel-art-drawer/static/js/2.27da7bf1.chunk.js.map",
+    "index.html": "/pixel-art-drawer/index.html",
+    "precache-manifest.976ca79b251b058de4c784742af30694.js": "/pixel-art-drawer/precache-manifest.976ca79b251b058de4c784742af30694.js",
+    "service-worker.js": "/pixel-art-drawer/service-worker.js",
+    "static/css/main.37edf6c9.chunk.css.map": "/pixel-art-drawer/static/css/main.37edf6c9.chunk.css.map",
+    "static/media/brush.png": "/pixel-art-drawer/static/media/brush.fe184838.png",
+    "static/media/eraser.png": "/pixel-art-drawer/static/media/eraser.1bcd3a4b.png",
+    "static/media/pencil.png": "/pixel-art-drawer/static/media/pencil.f4e77384.png"
+  }
+}
